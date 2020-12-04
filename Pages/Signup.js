@@ -1,19 +1,25 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
+import { API } from "../Routes/api";
 
 import { useForm } from "react-hook-form";
 
 const Signup = () => {
   const onSubmit = (data) => {
     console.log(data);
-    alert(data.Username + " " + data.Password);
+    console.log("in signup data");
+    API.signup({
+      data,
+      successfulCb: (res) =>
+        (username = res.data.username + " " + res.data.password),
+    });
   };
 
   const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    register("Username");
-    register("Password");
+    register("username");
+    register("password");
     register("ConfirmPassword");
   }, [register]);
 
@@ -23,7 +29,7 @@ const Signup = () => {
       <TextInput
         style={styles.textInput}
         onChangeText={(text) => {
-          setValue("Username", text);
+          setValue("username", text);
         }}
       />
       <Text style={styles.text}>Password</Text>
@@ -32,7 +38,7 @@ const Signup = () => {
         style={styles.textInput}
         secureTextEntry={true}
         onChangeText={(text) => {
-          setValue("Password", text);
+          setValue("password", text);
         }}
       />
       <Text style={styles.text}>Confirm Password</Text>
